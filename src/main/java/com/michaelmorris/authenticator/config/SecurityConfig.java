@@ -17,12 +17,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/health").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin();
+                .anyRequest().authenticated();
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
     }
+
 }

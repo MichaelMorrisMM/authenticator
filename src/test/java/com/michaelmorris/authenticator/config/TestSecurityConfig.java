@@ -24,4 +24,5 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) {
     }
+
 }
