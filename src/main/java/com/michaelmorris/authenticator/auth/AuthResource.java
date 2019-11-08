@@ -1,15 +1,21 @@
 package com.michaelmorris.authenticator.auth;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 public class AuthResource {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
+
+    @Autowired
+    public AuthResource(AuthenticationService authenticationService, UserService userService) {
+        this.authenticationService = authenticationService;
+        this.userService = userService;
+    }
 
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
