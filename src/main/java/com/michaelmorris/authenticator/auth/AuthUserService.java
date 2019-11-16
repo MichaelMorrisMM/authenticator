@@ -1,7 +1,9 @@
 package com.michaelmorris.authenticator.auth;
 
 import com.michaelmorris.authenticator.model.User;
+import com.michaelmorris.authenticator.model.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,10 +12,12 @@ import java.util.Optional;
 public class AuthUserService implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthUserService(UserRepository userRepository) {
+    public AuthUserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -34,6 +38,15 @@ public class AuthUserService implements UserService {
     @Override
     public Optional<User> findUserByUsername(String username) {
         return this.userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void registerUser(User user) throws UsernameAlreadyExistsException {
+        if (this.userRepository.existsByUsername(user.getUsername())) {
+            throw new UsernameAlreadyExistsException("A user with the username " + user.getUsername() + " already exists");
+        }
+        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        this.userRepository.save(user);
     }
 
 }
