@@ -22,8 +22,18 @@ public class AuthUserService implements UserService {
     }
 
     @Override
+    public Optional<User> findUserById(Long id) {
+        return this.userRepository.findById(id);
+    }
+
+    @Override
     public Optional<User> findUserByEmail(String email) {
         return this.userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findUserByUsername(String username) {
+        return this.userRepository.findByUsername(username);
     }
 
 }
