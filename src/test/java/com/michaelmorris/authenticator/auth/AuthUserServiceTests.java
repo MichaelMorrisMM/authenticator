@@ -1,5 +1,6 @@
 package com.michaelmorris.authenticator.auth;
 
+import com.michaelmorris.authenticator.model.InvalidCredentialsException;
 import com.michaelmorris.authenticator.model.User;
 import com.michaelmorris.authenticator.model.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,21 @@ class AuthUserServiceTests {
         User savedUser = result.get();
         assertEquals("username", savedUser.getUsername());
         assertEquals("email@emails.com", savedUser.getEmail());
+    }
+
+    @Test
+    void testValidUserAuthentication() {
+        User authenticationAttempt = new User();
+        authenticationAttempt.setUsername("test user 1");
+        authenticationAttempt.setPassword("password");
+        try {
+            User user = this.userService.authenticateUser(authenticationAttempt);
+            assertEquals(1L, user.getId());
+            assertEquals("test user 1", user.getUsername());
+            assertEquals("test1@email.com", user.getEmail());
+        } catch (InvalidCredentialsException e) {
+            fail("Valid login credentials should not cause InvalidCredentialsException");
+        }
     }
 
 }

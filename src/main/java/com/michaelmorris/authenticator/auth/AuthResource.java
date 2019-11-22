@@ -10,16 +10,23 @@ public class AuthResource {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
+    private final KeyProvider keyProvider;
 
     @Autowired
-    public AuthResource(AuthenticationService authenticationService, UserService userService) {
+    public AuthResource(AuthenticationService authenticationService, UserService userService, KeyProvider keyProvider) {
         this.authenticationService = authenticationService;
         this.userService = userService;
+        this.keyProvider = keyProvider;
     }
 
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("Authenticator is running");
+    }
+
+    @GetMapping("/public-key")
+    public ResponseEntity<String> publicKey() {
+        return ResponseEntity.ok(this.keyProvider.getPublicKeyEncodedAsText());
     }
 
 }

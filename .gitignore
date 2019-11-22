@@ -29,3 +29,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Automatically Generated RSA Keys ###
+*.key
+*.pub

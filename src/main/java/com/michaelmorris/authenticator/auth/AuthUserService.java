@@ -1,5 +1,6 @@
 package com.michaelmorris.authenticator.auth;
 
+import com.michaelmorris.authenticator.model.InvalidCredentialsException;
 import com.michaelmorris.authenticator.model.User;
 import com.michaelmorris.authenticator.model.UsernameAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,14 @@ public class AuthUserService implements UserService {
         }
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);
+    }
+
+    @Override
+    public User authenticateUser(User user) throws InvalidCredentialsException {
+        return this.userRepository
+                .findByUsername(user.getUsername())
+                .filter((User candidate) -> this.passwordEncoder.matches(user.getPassword(), candidate.getPassword()))
+                .orElseThrow(() -> new InvalidCredentialsException("The provided username/password is invalid"));
     }
 
 }

@@ -2,7 +2,6 @@ package com.michaelmorris.authenticator.auth;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
