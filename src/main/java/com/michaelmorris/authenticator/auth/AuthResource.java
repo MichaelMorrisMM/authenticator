@@ -1,5 +1,7 @@
 package com.michaelmorris.authenticator.auth;
 
+import com.michaelmorris.authenticator.util.KeyProvider;
+import com.michaelmorris.authenticator.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

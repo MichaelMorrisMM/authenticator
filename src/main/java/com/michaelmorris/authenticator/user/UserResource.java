@@ -1,5 +1,6 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.user;
 
+import com.michaelmorris.authenticator.auth.AuthenticationService;
 import com.michaelmorris.authenticator.model.InvalidCredentialsException;
 import com.michaelmorris.authenticator.model.User;
 import com.michaelmorris.authenticator.model.UsernameAlreadyExistsException;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class UsersResource {
+public class UserResource {
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
 
     @Autowired
-    public UsersResource(AuthenticationService authenticationService, UserService userService) {
+    public UserResource(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
     }

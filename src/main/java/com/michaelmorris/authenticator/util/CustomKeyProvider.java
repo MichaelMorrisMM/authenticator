@@ -1,5 +1,7 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.util;
 
+import com.michaelmorris.authenticator.config.KeysProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -16,15 +18,17 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 @Component
-public class AuthKeyProvider implements KeyProvider {
+public class CustomKeyProvider implements KeyProvider {
 
-    private static final String PATH_PRIVATE_KEY = "keys.key";
-    private static final String PATH_PUBLIC_KEY = "keys.pub";
-    private static final String ALGORITHM = "RSA";
-    private static final int KEY_SIZE = 2048;
+    private final KeysProperties keysProperties;
 
     private static RSAPrivateKey privateKey = null;
     private static RSAPublicKey publicKey = null;
+
+    @Autowired
+    public CustomKeyProvider(KeysProperties keysProperties) {
+        this.keysProperties = keysProperties;
+    }
 
     @Override
     public RSAPublicKey getPublicKeyById(String s) {
@@ -63,10 +67,10 @@ public class AuthKeyProvider implements KeyProvider {
         return "-----BEGIN RSA PUBLIC KEY-----\n" + Base64.getEncoder().encodeToString(key.getEncoded()) + "\n-----END RSA PUBLIC KEY-----\n";
     }
 
-    private static boolean attemptToReadKeys() throws Exception {
-        KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM);
-        File privateKeyFile = new File(PATH_PRIVATE_KEY);
-        File publicKeyFile = new File(PATH_PUBLIC_KEY);
+    private boolean attemptToReadKeys() throws Exception {
+        KeyFactory keyFactory = KeyFactory.getInstance(this.keysProperties.algorithm);
+        File privateKeyFile = new File(this.keysProperties.privateKeyPath);
+        File publicKeyFile = new File(this.keysProperties.publicKeyPath);
 
         if (!privateKeyFile.exists() || !publicKeyFile.exists()) {
             return false;
@@ -78,18 +82,18 @@ public class AuthKeyProvider implements KeyProvider {
         return true;
     }
 
-    private static void generateKeys() throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(ALGORITHM);
-        keyPairGenerator.initialize(KEY_SIZE, SecureRandom.getInstanceStrong());
+    private void generateKeys() throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(this.keysProperties.algorithm);
+        keyPairGenerator.initialize(this.keysProperties.keySize, SecureRandom.getInstanceStrong());
         KeyPair pair = keyPairGenerator.generateKeyPair();
 
         privateKey = (RSAPrivateKey) pair.getPrivate();
         publicKey = (RSAPublicKey) pair.getPublic();
 
-        try (var privateOutputStream = new FileOutputStream(PATH_PRIVATE_KEY)) {
+        try (var privateOutputStream = new FileOutputStream(this.keysProperties.privateKeyPath)) {
             privateOutputStream.write(privateKey.getEncoded());
         }
-        try (var publicOutputStream = new FileOutputStream(PATH_PUBLIC_KEY)) {
+        try (var publicOutputStream = new FileOutputStream(this.keysProperties.publicKeyPath)) {
             publicOutputStream.write(publicKey.getEncoded());
         }
     }

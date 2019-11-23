@@ -1,4 +1,4 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.user;
 
 import com.michaelmorris.authenticator.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

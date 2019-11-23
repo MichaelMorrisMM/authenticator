@@ -1,16 +1,16 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.util;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthAlgorithmProvider implements AlgorithmProvider {
+public class CustomAlgorithmProvider implements AlgorithmProvider {
 
     private final KeyProvider keyProvider;
 
     @Autowired
-    public AuthAlgorithmProvider(KeyProvider keyProvider) {
+    public CustomAlgorithmProvider(KeyProvider keyProvider) {
         this.keyProvider = keyProvider;
     }
 

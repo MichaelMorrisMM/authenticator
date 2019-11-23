@@ -1,4 +1,4 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.user;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-class UsersResourceTests {
+class UserResourceTests {
 
     @Autowired
     private MockMvc mockMvc;

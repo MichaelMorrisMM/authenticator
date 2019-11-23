@@ -1,4 +1,4 @@
-package com.michaelmorris.authenticator.auth;
+package com.michaelmorris.authenticator.user;
 
 import com.michaelmorris.authenticator.model.InvalidCredentialsException;
 import com.michaelmorris.authenticator.model.User;
